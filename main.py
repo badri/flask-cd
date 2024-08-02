@@ -1,15 +1,17 @@
 from flask import Flask, jsonify
 import os
 from datetime import datetime
-
+import logging
 
 app = Flask(__name__)
+
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route('/')
 def index():
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    app.logger.info(f'Request received at {timestamp}')
+    logging.info(f'Request received at {timestamp}')
     return jsonify({"Choo Choo": "Welcome to your Flask app. Edited at 9:46 PM, 2nd August 2024."})
 
 
