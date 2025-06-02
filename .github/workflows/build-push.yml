@@ -50,12 +50,12 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy Image
-        container:
+        uses: kohlerdominik/docker-run-action@v2
+        with:
           image: ghcr.io/kubenesthq/kubenest-cli:latest
-        run: |
-          # In your CI/CD pipeline
-          kubenest login --email "${{ env.KUBENEST_EMAIL }}" --password "${{ secrets.KUBENEST_PASSWORD }}" --api-url "${{ env.KUBENEST_API_URL }}"
-          kubenest context set-team "${{ env.KUBENEST_TEAM }}"
-          kubenest context set-cluster "${{ env.KUBENEST_CLUSTER }}"
-          kubenest context set-project "${{ env.KUBENEST_PROJECT }}"
-          kubenest apps
+          run: |
+            kubenest login --email "${{ env.KUBENEST_EMAIL }}" --password "${{ secrets.KUBENEST_PASSWORD }}" --api-url "${{ env.KUBENEST_API_URL }}"
+            kubenest context set-team "${{ env.KUBENEST_TEAM }}"
+            kubenest context set-cluster "${{ env.KUBENEST_CLUSTER }}"
+            kubenest context set-project "${{ env.KUBENEST_PROJECT }}"
+            kubenest apps
