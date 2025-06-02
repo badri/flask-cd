@@ -50,7 +50,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy Image
-        uses: kohlerdominik/docker-run-action@v2
+        uses: kohlerdominik/docker-run-action@v2.0.0
         with:
           image: ghcr.io/kubenesthq/kubenest-cli:latest
           run: |
