@@ -1,0 +1,61 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: badri/flask
+  KUBENEST_EMAIL: lakshmi@lakshminp.com
+  KUBENEST_API_URL: https://4014-49-47-216-249.ngrok-free.app
+  KUBENEST_TEAM: "My Team"
+  KUBENEST_CLUSTER: "do test"
+  KUBENEST_PROJECT: "test op"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Deploy Image
+        container:
+          image: ghcr.io/kubenesthq/kubenest-cli:latest
+        run: |
+          # In your CI/CD pipeline
+          kubenest login --email "${{ env.KUBENEST_EMAIL }}" --password "${{ secrets.KUBENEST_PASSWORD }}" --api-url "${{ env.KUBENEST_API_URL }}"
+          kubenest context set-team "${{ env.KUBENEST_TEAM }}"
+          kubenest context set-cluster "${{ env.KUBENEST_CLUSTER }}"
+          kubenest context set-project "${{ env.KUBENEST_PROJECT }}"
+          kubenest apps
