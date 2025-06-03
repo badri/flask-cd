@@ -52,7 +52,7 @@ jobs:
       - name: Deploy Image
         uses: kohlerdominik/docker-run-action@v2.0.0
         with:
-          image: ghcr.io/kubenesthq/kubenest-cli:latest
+          image: ghcr.io/kubenesthq/kubenest-cli:v1.0.4
           run: |
             kubenest login --email "${{ env.KUBENEST_EMAIL }}" --password "${{ secrets.KUBENEST_PASSWORD }}" --api-url "${{ env.KUBENEST_API_URL }}"
             kubenest context set-team "${{ env.KUBENEST_TEAM }}"
