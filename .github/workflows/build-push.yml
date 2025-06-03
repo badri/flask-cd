@@ -11,7 +11,7 @@ env:
   KUBENEST_EMAIL: lakshmi@lakshminp.com
   KUBENEST_API_URL: https://4014-49-47-216-249.ngrok-free.app
   KUBENEST_TEAM: "My Team"
-  KUBENEST_CLUSTER: "do test"
+  KUBENEST_CLUSTER: "do-test"
   KUBENEST_PROJECT: "test op"
 
 jobs:
@@ -46,7 +46,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy Image
@@ -59,3 +61,4 @@ jobs:
             kubenest context set-cluster "${{ env.KUBENEST_CLUSTER }}"
             kubenest context set-project "${{ env.KUBENEST_PROJECT }}"
             kubenest apps
+            echo "Image tag: ${{ github.sha }}"
