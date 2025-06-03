@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 def index():
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     logging.info(f'Request received at {timestamp}')
-    return jsonify({"Choo Choo": "Welcome to your Flask app. Edited at 7:36 AM, 3rd June 2025."})
+    return jsonify({"Choo Choo": "Welcome to your Flask app. Edited at 7:43 AM, 3rd June 2025."})
 
 
 if __name__ == '__main__':

@@ -13,6 +13,7 @@ env:
   KUBENEST_TEAM: "My Team"
   KUBENEST_CLUSTER: "do-test"
   KUBENEST_PROJECT: "test op"
+  KUBENEST_APP_NAME: "cli2"
 
 jobs:
   build-and-push:
@@ -60,5 +61,4 @@ jobs:
             kubenest context set-team "${{ env.KUBENEST_TEAM }}"
             kubenest context set-cluster "${{ env.KUBENEST_CLUSTER }}"
             kubenest context set-project "${{ env.KUBENEST_PROJECT }}"
-            kubenest apps
-            echo "Image tag: ${{ github.sha }}"
+            kubenest app deploy "${{ env.KUBENEST_APP_NAME }}" --component app --image-tag ${{ github.sha }}
